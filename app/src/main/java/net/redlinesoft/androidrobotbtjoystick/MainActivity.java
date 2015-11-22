@@ -1,6 +1,8 @@
 package net.redlinesoft.androidrobotbtjoystick;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jmedeisis.bugstick.Joystick;
 import com.jmedeisis.bugstick.JoystickListener;
@@ -25,6 +28,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
+import app.akexorcist.bluetotohspp.library.BluetoothState;
+import app.akexorcist.bluetotohspp.library.DeviceList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
     Boolean buttonDownRight = false;
     BluetoothSPP bt;
     Context context;
+    Boolean btConnect = false;
+
+    TextView txtAngle;
+    TextView txtOffset;
+    TextView txtHold;
 
 
     @Override
@@ -55,10 +65,28 @@ public class MainActivity extends AppCompatActivity {
 
         // setup bluetooth
         bt = new BluetoothSPP(context);
+        checkBluetoothState();
 
-        if (!bt.isBluetoothAvailable()) {
-            // any command for bluetooth is not available
-        }
+        bt.setBluetoothConnectionListener(new BluetoothSPP.BluetoothConnectionListener() {
+            public void onDeviceConnected(String name, String address) {
+                // Do something when successfully connected
+                Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
+                btConnect = true;
+            }
+
+            public void onDeviceDisconnected() {
+                // Do something when connection was disconnected
+                Toast.makeText(getApplicationContext(), "Disconnected", Toast.LENGTH_SHORT).show();
+                btConnect = false;
+                btConnect = true;
+            }
+
+            public void onDeviceConnectionFailed() {
+                // Do something when connection failed
+                Toast.makeText(getApplicationContext(), "Connection Failed", Toast.LENGTH_SHORT).show();
+                btConnect = false;
+            }
+        });
 
         // set view
         mDecorView = getWindow().getDecorView();
@@ -69,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
         final TextView txtOffset = (TextView) findViewById(R.id.txtOffset);
         final TextView txtHold = (TextView) findViewById(R.id.txtHold);
 
+
+    }
+
+    private void setup() {
         Joystick joystickLeft = (Joystick) findViewById(R.id.joystickLeft);
         Joystick joystickRight = (Joystick) findViewById(R.id.joystickRight);
 
@@ -732,7 +764,56 @@ public class MainActivity extends AppCompatActivity {
                 buttonDownLeft = false;
             }
         });
+    }
 
+    private void checkBluetoothState() {
+        if (bt.isBluetoothEnabled()) {
+
+            if (this.btConnect == true) {
+                bt.disconnect();
+            }
+            bt.setupService();
+            bt.startService(BluetoothState.DEVICE_OTHER);
+            // load device list
+            Intent intent = new Intent(getApplicationContext(), DeviceList.class);
+            startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
+            if (resultCode == Activity.RESULT_OK)
+                bt.connect(data);
+            setup();
+        } else if (requestCode == BluetoothState.REQUEST_ENABLE_BT) {
+            if (resultCode == Activity.RESULT_OK) {
+                bt.setupService();
+                bt.startService(BluetoothState.DEVICE_OTHER);
+                setup();
+            } else {
+                // Do something if user doesn't choose any device (Pressed back)
+            }
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (!bt.isBluetoothEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, BluetoothState.REQUEST_ENABLE_BT);
+
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        bt.stopService();
     }
 
     @Override
@@ -821,7 +902,7 @@ public class MainActivity extends AppCompatActivity {
         int itemId = item.getItemId();
 
         if (itemId == R.id.mnuBluetooth) {
-
+            checkBluetoothState();
         } else if (itemId == R.id.mnuSetting) {
             Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivityForResult(i, RESULT_SETTING);
