@@ -1,0 +1,98 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pref_token_switch"
+        android:summary="@string/pref_description_token"
+        android:title="@string/pref_title_token" />
+
+    <EditTextPreference
+        android:defaultValue="@string/pref_default_before_token"
+        android:inputType="textCapWords"
+        android:key="pref_before_token"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_before_token"
+        android:dependency="pref_token_switch"
+        />
+
+    <EditTextPreference
+        android:defaultValue="@string/pref_default_end_token"
+        android:inputType="textCapWords"
+        android:key="pref_end_token"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_end_token"
+        android:dependency="pref_token_switch"
+        />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="pref_send_pwm_switch"
+        android:summary="@string/pref_description_send_pwm"
+        android:title="@string/pref_title_send_pwm" />
+
+    <EditTextPreference
+        android:defaultValue="@string/pref_default_pwm_separator"
+        android:inputType="textCapWords"
+        android:key="pref_pwm_separator"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_pwm_separator"
+        android:dependency="pref_send_pwm_switch"
+        />
+
+ <!--   <SwitchPreference
+        android:defaultValue="false"
+        android:key="pref_send_angle_switch"
+        android:summary="@string/pref_description_send_angle_pwm"
+        android:title="@string/pref_title_send_angle_pwm" />
+
+    <EditTextPreference
+        android:defaultValue="@string/pref_default_pwm_separator"
+        android:inputType="textCapWords"
+        android:key="pref_pwm_angle_separator"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_pwm_separator"
+        android:dependency="pref_send_angle_switch"-->
+        />
+
+    <ListPreference
+        android:defaultValue="50"
+        android:entries="@array/pref_tite_delay"
+        android:entryValues="@array/pref_delay_list_values"
+        android:key="pref_delay_list"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_delay" />
+
+    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+    <!--<EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/pref_default_display_name"
+        android:inputType="textCapWords"
+        android:key="example_text"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_display_name" />-->
+
+    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+         dismiss it. -->
+    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+   <!-- <ListPreference
+        android:defaultValue="-1"
+        android:entries="@array/pref_example_list_titles"
+        android:entryValues="@array/pref_example_list_values"
+        android:key="example_list"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_add_friends_to_messages" />-->
+
+</PreferenceScreen>

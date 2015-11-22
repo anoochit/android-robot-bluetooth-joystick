@@ -1,0 +1,121 @@
+<resources>
+    <string name="app_name">Arduino Robot BT Joystick</string>
+    <string name="mnuSetting">Setting</string>
+    <string name="mnuFullscreen">Fullscreen</string>
+    <string name="mnuBluetooth">Connect</string>
+    <string name="title_activity_settings">Settings</string>
+
+
+    <string name="pref_header_general">General</string>
+    <string name="pref_description_send_pwm">Send distance as PWM value (1-100)</string>
+    <string name="pref_title_send_pwm">Send distance as PWM value</string>
+    <string name="pref_title_delay">Delay before send data</string>
+    <string-array name="pref_tite_delay">
+        <item>50 milliseconds</item>
+        <item>100 milliseconds</item>
+        <item>200 milliseconds</item>
+        <item>500 milliseconds</item>
+        <item>1000 milliseconds</item>
+    </string-array>
+    <string-array name="pref_delay_list_values">
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>500</item>
+        <item>1000</item>
+    </string-array>
+
+    <string name="pref_title_pwm_separator">String seperator before value</string>
+    <string name="pref_default_pwm_separator">|</string>
+
+    <string name="pref_title_end_token">End token string</string>
+    <string name="pref_default_end_token">#</string>
+
+    <string name="pref_description_token">Token string before and after value</string>
+    <string name="pref_title_token">Use token string in value</string>
+    <string name="pref_default_before_token">*</string>
+    <string name="pref_title_before_token">Before token string</string>
+
+    <string name="pref_header_joystick_left">Left Joystick Buttons</string>
+
+    <string name="pref_default_left_pos_up">10|13</string>
+    <string name="pref_title_left_pos_up">Up</string>
+    <string name="pref_default_left_pos_down">10|12</string>
+    <string name="pref_title_left_pos_down">Down</string>
+    <string name="pref_default_left_pos_left">10|10</string>
+    <string name="pref_title_left_pos_left">Left</string>
+    <string name="pref_default_left_pos_right">10|9</string>
+    <string name="pref_title_left_pos_right">Right</string>
+    <string name="pref_default_left_pos_upleft">10|10</string>
+    <string name="pref_default_left_pos_upright">10|9</string>
+    <string name="pref_default_left_pos_downright">10|9</string>
+    <string name="pref_default_left_pos_downleft">10|10</string>
+    <string name="pref_title_left_pos_downright">Down right</string>
+    <string name="pref_title_left_pos_downleft">Down left</string>
+    <string name="pref_title_left_pos_upright">Up right</string>
+    <string name="pref_title_left_pos_upleft">Up left</string>
+
+    <string name="pref_title_hold_left">Hold left joystick</string>
+    <string name="pref_default_hold_left_pos_up">11|13</string>
+    <string name="pref_title_hold_left_pos_up">Up</string>
+    <string name="pref_default_hold_left_pos_down">11|12</string>
+    <string name="pref_title_hold_left_pos_down">Down</string>
+    <string name="pref_default_hold_left_pos_left">11|10</string>
+    <string name="pref_title_hold_left_pos_left">Left</string>
+    <string name="pref_default_hold_left_pos_right">11|9</string>
+    <string name="pref_title_hold_left_pos_right">Right</string>
+    <string name="pref_default_hold_left_pos_upleft">11|10</string>
+    <string name="pref_default_hold_left_pos_upright">11|9</string>
+    <string name="pref_default_hold_left_pos_downright">11|9</string>
+    <string name="pref_default_hold_left_pos_downleft">11|10</string>
+    <string name="pref_title_hold_left_pos_downright">Down right</string>
+    <string name="pref_title_hold_left_pos_downleft">Down left</string>
+    <string name="pref_title_hold_left_pos_upright">Up right</string>
+    <string name="pref_title_hold_left_pos_upleft">Up left</string>
+
+    <string name="pref_header_joystick_right">Right Joystick Buttons</string>
+
+    <string name="pref_default_right_pos_up">10|13</string>
+    <string name="pref_title_right_pos_up">Up</string>
+    <string name="pref_default_right_pos_down">10|12</string>
+    <string name="pref_title_right_pos_down">Down</string>
+    <string name="pref_default_right_pos_left">10|10</string>
+    <string name="pref_title_right_pos_left">Left</string>
+    <string name="pref_default_right_pos_right">10|9</string>
+    <string name="pref_title_right_pos_right">Right</string>
+    <string name="pref_default_right_pos_upleft">10|10</string>
+    <string name="pref_default_right_pos_upright">10|9</string>
+    <string name="pref_default_right_pos_downright">10|9</string>
+    <string name="pref_default_right_pos_downleft">10|10</string>
+    <string name="pref_title_right_pos_downright">Down right</string>
+    <string name="pref_title_right_pos_downleft">Down left</string>
+    <string name="pref_title_right_pos_upright">Up right</string>
+    <string name="pref_title_right_pos_upleft">Up left</string>
+
+    <string name="pref_title_hold_right">Hold right joystick</string>
+    <string name="pref_default_hold_right_pos_up">11|13</string>
+    <string name="pref_title_hold_right_pos_up">Up</string>
+    <string name="pref_default_hold_right_pos_down">11|12</string>
+    <string name="pref_title_hold_right_pos_down">Down</string>
+    <string name="pref_default_hold_right_pos_left">11|10</string>
+    <string name="pref_title_hold_right_pos_left">Left</string>
+    <string name="pref_default_hold_right_pos_right">11|9</string>
+    <string name="pref_title_hold_right_pos_right">Right</string>
+    <string name="pref_default_hold_right_pos_upleft">11|10</string>
+    <string name="pref_default_hold_right_pos_upright">11|9</string>
+    <string name="pref_default_hold_right_pos_downright">11|9</string>
+    <string name="pref_default_hold_right_pos_downleft">11|10</string>
+    <string name="pref_title_hold_right_pos_downright">Down right</string>
+    <string name="pref_title_hold_right_pos_downleft">Down left</string>
+    <string name="pref_title_hold_right_pos_upright">Up right</string>
+    <string name="pref_title_hold_right_pos_upleft">Up left</string>
+
+    <string name="pref_description_send_angle_pwm">Send angle as PWM value (0-360)</string>
+    <string name="pref_title_send_angle_pwm">Send angle as PWM value</string>
+
+<!-- alert -->
+    <string name="alert_nodata_setup_first">Please setup button first!</string>
+    <string name="button_ok">Ok</string>
+
+
+</resources>
