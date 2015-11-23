@@ -117,5 +117,13 @@
     <string name="alert_nodata_setup_first">Please setup button first!</string>
     <string name="button_ok">Ok</string>
 
+    <string name="state_connected">Connected</string>
+    <string name="state_disconnected">Disconnected</string>
+    <string name="state_connection_failed">Connection Failed</string>
+
+    <string name="mnu_connect">Connect</string>
+    <string name="mnu_disconnect">Disconnect</string>
+
+
 
 </resources>

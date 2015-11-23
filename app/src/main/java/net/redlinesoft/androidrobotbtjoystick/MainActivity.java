@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     TextView txtAngle;
     TextView txtOffset;
     TextView txtHold;
+    Menu menu;
 
 
     @Override
@@ -70,21 +71,30 @@ public class MainActivity extends AppCompatActivity {
         bt.setBluetoothConnectionListener(new BluetoothSPP.BluetoothConnectionListener() {
             public void onDeviceConnected(String name, String address) {
                 // Do something when successfully connected
-                Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.state_connected, Toast.LENGTH_SHORT).show();
                 btConnect = true;
+                // change setting menu
+                MenuItem settingsItem = menu.findItem(R.id.mnuBluetooth);
+                settingsItem.setTitle(R.string.mnu_disconnect);
             }
 
             public void onDeviceDisconnected() {
                 // Do something when connection was disconnected
-                Toast.makeText(getApplicationContext(), "Disconnected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.state_disconnected, Toast.LENGTH_SHORT).show();
                 btConnect = false;
                 btConnect = true;
+                // change setting menu
+                MenuItem settingsItem = menu.findItem(R.id.mnuBluetooth);
+                settingsItem.setTitle(R.string.mnu_connect);
             }
 
             public void onDeviceConnectionFailed() {
                 // Do something when connection failed
-                Toast.makeText(getApplicationContext(), "Connection Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.state_connection_failed, Toast.LENGTH_SHORT).show();
                 btConnect = false;
+                // change setting menu
+                MenuItem settingsItem = menu.findItem(R.id.mnuBluetooth);
+                settingsItem.setTitle(R.string.mnu_connect);
             }
         });
 
@@ -92,15 +102,17 @@ public class MainActivity extends AppCompatActivity {
         mDecorView = getWindow().getDecorView();
         hideSystemUI();
 
-        // set view
-        final TextView txtAngle = (TextView) findViewById(R.id.txtAngle);
-        final TextView txtOffset = (TextView) findViewById(R.id.txtOffset);
-        final TextView txtHold = (TextView) findViewById(R.id.txtHold);
+
 
 
     }
 
     private void setup() {
+        // set view
+        txtAngle = (TextView) findViewById(R.id.txtAngle);
+        txtOffset = (TextView) findViewById(R.id.txtOffset);
+        txtHold = (TextView) findViewById(R.id.txtHold);
+
         Joystick joystickLeft = (Joystick) findViewById(R.id.joystickLeft);
         Joystick joystickRight = (Joystick) findViewById(R.id.joystickRight);
 
@@ -805,7 +817,6 @@ public class MainActivity extends AppCompatActivity {
         if (!bt.isBluetoothEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, BluetoothState.REQUEST_ENABLE_BT);
-
         }
 
     }
@@ -852,7 +863,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendBluetoothData(final String data) {
         Log.d("LOG", data);
-
+        bt.send(data, true);
     }
 
     public int get8Direction(float degrees) {
@@ -894,6 +905,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        this.menu=menu;
         return super.onCreateOptionsMenu(menu);
     }
 
