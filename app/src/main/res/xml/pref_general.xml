@@ -45,6 +45,23 @@
         android:dependency="pref_send_pwm_switch"
         />
 
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="pref_send_video_switch"
+        android:summary="@string/pref_description_video"
+        android:title="@string/pref_descriptiontitle_video" />
+
+    <EditTextPreference
+        android:defaultValue="@string/pref_default_video"
+        android:inputType="textCapWords"
+        android:key="pref_video"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_video"
+        android:dependency="pref_send_video_switch"
+        />
+
  <!--   <SwitchPreference
         android:defaultValue="false"
         android:key="pref_send_angle_switch"

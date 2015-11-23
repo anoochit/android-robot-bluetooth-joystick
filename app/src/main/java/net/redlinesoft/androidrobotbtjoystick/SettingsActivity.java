@@ -155,6 +155,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("pref_before_token"));
             bindPreferenceSummaryToValue(findPreference("pref_end_token"));
             bindPreferenceSummaryToValue(findPreference("pref_pwm_separator"));
+            bindPreferenceSummaryToValue(findPreference("pref_video"));
 //            bindPreferenceSummaryToValue(findPreference("pref_pwm_angle_separator"));
             bindPreferenceSummaryToValue(findPreference("pref_delay_list"));
         }

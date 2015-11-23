@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.jmedeisis.bugstick.Joystick;
 import com.jmedeisis.bugstick.JoystickListener;
@@ -54,15 +55,25 @@ public class MainActivity extends AppCompatActivity {
     TextView txtAngle;
     TextView txtOffset;
     TextView txtHold;
+    TextView txtValue;
     Menu menu;
-
+    Joystick joystickRight, joystickLeft;
+    SharedPreferences prefs;
+    VideoView videoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getWindow().getDecorView().setBackgroundColor(Color.DKGRAY);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        getWindow().getDecorView().setBackgroundColor(Color.BLACK);
+
+        joystickLeft = (Joystick) findViewById(R.id.joystickLeft);
+        joystickRight = (Joystick) findViewById(R.id.joystickRight);
+
+
 
         // setup bluetooth
         bt = new BluetoothSPP(context);
@@ -71,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         bt.setBluetoothConnectionListener(new BluetoothSPP.BluetoothConnectionListener() {
             public void onDeviceConnected(String name, String address) {
                 // Do something when successfully connected
-                Toast.makeText(getApplicationContext(),R.string.state_connected, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.state_connected, Toast.LENGTH_SHORT).show();
                 btConnect = true;
                 // change setting menu
                 MenuItem settingsItem = menu.findItem(R.id.mnuBluetooth);
@@ -101,10 +112,6 @@ public class MainActivity extends AppCompatActivity {
         // set view
         mDecorView = getWindow().getDecorView();
         hideSystemUI();
-
-
-
-
     }
 
     private void setup() {
@@ -112,9 +119,10 @@ public class MainActivity extends AppCompatActivity {
         txtAngle = (TextView) findViewById(R.id.txtAngle);
         txtOffset = (TextView) findViewById(R.id.txtOffset);
         txtHold = (TextView) findViewById(R.id.txtHold);
+        txtValue = (TextView) findViewById(R.id.txtValue);
 
-        Joystick joystickLeft = (Joystick) findViewById(R.id.joystickLeft);
-        Joystick joystickRight = (Joystick) findViewById(R.id.joystickRight);
+
+        // setup motion constrain for joystick right
 
         joystickLeft.setJoystickListener(new JoystickListener() {
             @Override
@@ -453,7 +461,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onDrag(float degrees, float offset) {
-
                 // set text
                 txtAngle.setText(String.valueOf(angleConvert(degrees)));
                 txtOffset.setText(String.valueOf(distanceConvert(offset)));
@@ -780,7 +787,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkBluetoothState() {
         if (bt.isBluetoothEnabled()) {
-
             if (this.btConnect == true) {
                 bt.disconnect();
             }
@@ -789,6 +795,52 @@ public class MainActivity extends AppCompatActivity {
             // load device list
             Intent intent = new Intent(getApplicationContext(), DeviceList.class);
             startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
+        }
+    }
+
+    private void setupJoystickMode() {
+        // setup motion constrain for joystick left
+        if (prefs.getBoolean("pref_constrain_left_switch", false)==false) {
+            Log.d("LOG-JOY", "constrain normal");
+            joystickLeft.setMotionConstraint(Joystick.MotionConstraint.NONE);
+        } else if (((prefs.getBoolean("pref_constrain_left_hor", true)) == true) && ((prefs.getBoolean("pref_constrain_left_ver", true)) == false)) {
+            Log.d("LOG-JOY", "constrain hor");
+            joystickLeft.setMotionConstraint(Joystick.MotionConstraint.HORIZONTAL);
+        } else if (((prefs.getBoolean("pref_constrain_left_hor", true)) == false) && ((prefs.getBoolean("pref_constrain_left_ver", true)) == true)) {
+            Log.d("LOG-JOY", "constrain ver");
+            joystickLeft.setMotionConstraint(Joystick.MotionConstraint.VERTICAL);
+        } else {
+            joystickLeft.setMotionConstraint(Joystick.MotionConstraint.NONE);
+        }
+
+
+        // setup motion constrain for joystick right
+        if (prefs.getBoolean("pref_constrain_right_switch", false)==false) {
+            Log.d("LOG-JOY", "constrain normal");
+            joystickRight.setMotionConstraint(Joystick.MotionConstraint.NONE);
+        } else if (((prefs.getBoolean("pref_constrain_right_hor", true)) == true) && ((prefs.getBoolean("pref_constrain_right_ver", true)) == false)) {
+            Log.d("LOG-JOY", "constrain hor");
+            joystickRight.setMotionConstraint(Joystick.MotionConstraint.HORIZONTAL);
+        } else if (((prefs.getBoolean("pref_constrain_right_hor", true)) == false) && ((prefs.getBoolean("pref_constrain_right_ver", true)) == true)) {
+            Log.d("LOG-JOY", "constrain ver");
+            joystickRight.setMotionConstraint(Joystick.MotionConstraint.VERTICAL);
+        } else {
+            joystickRight.setMotionConstraint(Joystick.MotionConstraint.NONE);
+        }
+    }
+
+    private void setupVideoMode(){
+        // setup motion constrain for joystick left
+        if (prefs.getBoolean("pref_send_video_switch", false)==true) {
+            // start video
+            try {
+                videoView = (VideoView) findViewById(R.id.videoView);
+                Uri videoUri = Uri.parse(prefs.getString("pref_video", "rtsp://"));
+                videoView.setVideoURI(videoUri);
+                videoView.start();
+            }catch (Exception e) {
+                Log.d("LOG",e.getMessage());
+            }
         }
     }
 
@@ -813,13 +865,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+        // setup bluetooth
         if (!bt.isBluetoothEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, BluetoothState.REQUEST_ENABLE_BT);
         }
-
+        // setup joystick mode after restart
+        setupJoystickMode();
+        // setup video camera
+        setupVideoMode();
     }
+
+
 
     @Override
     protected void onDestroy() {
@@ -830,11 +887,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadPreference();
+
     }
 
-
-    SharedPreferences prefs;
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        loadPreference();
+    }
 
     public void loadPreference() {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -863,6 +923,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendBluetoothData(final String data) {
         Log.d("LOG", data);
+        txtValue.setText(data);
         bt.send(data, true);
     }
 
@@ -905,7 +966,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        this.menu=menu;
+        this.menu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -959,6 +1020,3 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
-
-
-

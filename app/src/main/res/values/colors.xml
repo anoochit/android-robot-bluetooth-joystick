@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#006064</color>
     <color name="colorAccent">#FF5722</color>
     <color name="windowBackground">#616161</color>
+
+    <color name="baseColor">#40ffffff</color>
+    <color name="stickColor">#50000000</color>
 </resources>

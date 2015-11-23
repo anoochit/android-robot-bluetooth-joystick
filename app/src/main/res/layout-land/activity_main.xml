@@ -3,76 +3,103 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="net.redlinesoft.androidrobotbtjoystick.MainActivity">
 
-    <com.jmedeisis.bugstick.Joystick
-        android:id="@+id/joystickLeft"
-        android:layout_width="@dimen/base_size"
-        android:layout_height="@dimen/base_size"
-        android:background="@drawable/bg_base"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <!-- You may use any View here. -->
-        <Button
-            android:layout_width="@dimen/stick_size"
-            android:layout_height="@dimen/stick_size"
-            android:background="@drawable/bg_stick" />
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center" />
+    </FrameLayout>
 
-    </com.jmedeisis.bugstick.Joystick>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
-    <com.jmedeisis.bugstick.Joystick
-        android:id="@+id/joystickRight"
-        android:layout_width="@dimen/base_size"
-        android:layout_height="@dimen/base_size"
-        android:background="@drawable/bg_base"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        <TextView
+            android:id="@+id/txtAngle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_gravity="center_horizontal"
+            android:visibility="invisible" />
 
-        <!-- You may use any View here. -->
-        <Button
-            android:layout_width="@dimen/stick_size"
-            android:layout_height="@dimen/stick_size"
-            android:background="@drawable/bg_stick" />
+        <TextView
+            android:id="@+id/txtOffset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtAngle"
+            android:layout_centerHorizontal="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="invisible" />
 
-    </com.jmedeisis.bugstick.Joystick>
+        <com.jmedeisis.bugstick.Joystick
+            android:id="@+id/joystickRight"
+            android:layout_width="@dimen/base_size"
+            android:layout_height="@dimen/base_size"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right|bottom"
+            android:background="@drawable/bg_base">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/txtAngle"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+            <!-- You may use any View here. -->
+            <Button
+                android:layout_width="@dimen/stick_size"
+                android:layout_height="@dimen/stick_size"
+                android:background="@drawable/bg_stick" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/txtOffset"
-        android:layout_below="@+id/txtAngle"
-        android:layout_centerHorizontal="true" />
+        </com.jmedeisis.bugstick.Joystick>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/txtHold"
-        android:layout_below="@+id/txtOffset"
-        android:layout_centerHorizontal="true" />
+        <com.jmedeisis.bugstick.Joystick
+            android:id="@+id/joystickLeft"
+            android:layout_width="@dimen/base_size"
+            android:layout_height="@dimen/base_size"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="left|bottom"
+            android:background="@drawable/bg_base">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/txtValue"
-        android:layout_below="@+id/txtHold"
-        android:layout_centerHorizontal="true" />
+            <!-- You may use any View here. -->
+            <Button
+                android:layout_width="@dimen/stick_size"
+                android:layout_height="@dimen/stick_size"
+                android:background="@drawable/bg_stick" />
+
+        </com.jmedeisis.bugstick.Joystick>
+
+        <TextView
+            android:id="@+id/txtValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtHold"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal|bottom"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/txtHold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtOffset"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal|bottom"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="invisible" />
+    </FrameLayout>
 
 </RelativeLayout>
