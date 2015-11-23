@@ -818,10 +818,12 @@ public class MainActivity extends AppCompatActivity {
         if (prefs.getBoolean("pref_constrain_right_switch", false)==false) {
             Log.d("LOG-JOY", "constrain normal");
             joystickRight.setMotionConstraint(Joystick.MotionConstraint.NONE);
-        } else if (((prefs.getBoolean("pref_constrain_right_hor", true)) == true) && ((prefs.getBoolean("pref_constrain_right_ver", true)) == false)) {
+        } else if (((prefs.getBoolean("pref_constrain_right_hor", true)) == true) &&
+                ((prefs.getBoolean("pref_constrain_right_ver", true)) == false)) {
             Log.d("LOG-JOY", "constrain hor");
             joystickRight.setMotionConstraint(Joystick.MotionConstraint.HORIZONTAL);
-        } else if (((prefs.getBoolean("pref_constrain_right_hor", true)) == false) && ((prefs.getBoolean("pref_constrain_right_ver", true)) == true)) {
+        } else if (((prefs.getBoolean("pref_constrain_right_hor", true)) == false) &&
+                ((prefs.getBoolean("pref_constrain_right_ver", true)) == true)) {
             Log.d("LOG-JOY", "constrain ver");
             joystickRight.setMotionConstraint(Joystick.MotionConstraint.VERTICAL);
         } else {
@@ -835,7 +837,7 @@ public class MainActivity extends AppCompatActivity {
             // start video
             try {
                 videoView = (VideoView) findViewById(R.id.videoView);
-                Uri videoUri = Uri.parse(prefs.getString("pref_video", "rtsp://"));
+                Uri videoUri = Uri.parse(prefs.getString("pref_video", ""));
                 videoView.setVideoURI(videoUri);
                 videoView.start();
             }catch (Exception e) {
