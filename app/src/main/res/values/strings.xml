@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Arduino Robot BT Joystick</string>
-    <string name="mnuSetting">Setting</string>
+    <string name="mnuSetting">Settings</string>
     <string name="mnuFullscreen">Fullscreen</string>
     <string name="mnuBluetooth">Connect</string>
     <string name="title_activity_settings">Settings</string>
