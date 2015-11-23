@@ -924,6 +924,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void sendBluetoothData(final String data) {
+        // FIXME: 11/23/15 flood output T_T
         Log.d("LOG", data);
         txtValue.setText(data);
         bt.send(data, true);
