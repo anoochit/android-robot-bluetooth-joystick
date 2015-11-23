@@ -123,9 +123,9 @@
 
     <string name="mnu_connect">Connect</string>
     <string name="mnu_disconnect">Disconnect</string>
-    <string name="pref_title_constrain_left_switch">Setup motion contrain</string>
+    <string name="pref_title_constrain_left_switch">Setup motion constrain</string>
     <string name="pref_title_constrain_left_hor">Constrain Horizontal</string>
-    <string name="pref_title_constrain_left_ver">Constrain vertical</string>
+    <string name="pref_title_constrain_left_ver">Constrain Vertical</string>
     <string name="pref_default_video">http://techslides.com/demos/sample-videos/small.mp4</string>
     <string name="pref_title_video">Stream URL</string>
     <string name="pref_description_video">Show video via streaming</string>
