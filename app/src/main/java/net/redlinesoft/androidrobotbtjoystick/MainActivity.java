@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        getWindow().getDecorView().setBackgroundColor(Color.BLACK);
+        getWindow().getDecorView().setBackgroundColor(Color.DKGRAY);
 
         joystickLeft = (Joystick) findViewById(R.id.joystickLeft);
         joystickRight = (Joystick) findViewById(R.id.joystickRight);
