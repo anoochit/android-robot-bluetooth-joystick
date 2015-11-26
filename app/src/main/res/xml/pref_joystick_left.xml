@@ -119,7 +119,8 @@
     <SwitchPreference
         android:defaultValue="false"
         android:key="pref_hold_left"
-        android:title="@string/pref_title_hold_left" />
+        android:title="@string/pref_title_hold_left"
+        android:dependency="pref_left_switch"/>
 
     <EditTextPreference
         android:defaultValue="@string/pref_default_hold_left_pos_up"

@@ -872,6 +872,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupJoystickMode() {
+
+        if (prefs.getBoolean("pref_left_switch",true)==false){
+            joystickLeft.setVisibility(View.INVISIBLE);
+        }else {
+            joystickLeft.setVisibility(View.VISIBLE);
+        }
+
+        if (prefs.getBoolean("pref_right_switch",true)==false){
+            joystickRight.setVisibility(View.INVISIBLE);
+        }else {
+            joystickRight.setVisibility(View.VISIBLE);
+        }
+
         // setup motion constrain for joystick left
         if (prefs.getBoolean("pref_constrain_left_switch", false) == false) {
             Log.d("LOG-JOY", "constrain normal");
@@ -885,7 +898,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             joystickLeft.setMotionConstraint(Joystick.MotionConstraint.NONE);
         }
-
 
         // setup motion constrain for joystick right
         if (prefs.getBoolean("pref_constrain_right_switch", false) == false) {
@@ -1067,6 +1079,8 @@ public class MainActivity extends AppCompatActivity {
         } else if (itemId == R.id.mnuSetting) {
             Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivityForResult(i, RESULT_SETTING);
+        } else if (itemId ==R.id.mnuFullscreen) {
+            hideSystemUI();
         }
 
         return super.onOptionsItemSelected(item);

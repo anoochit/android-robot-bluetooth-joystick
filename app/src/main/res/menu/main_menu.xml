@@ -9,6 +9,11 @@
         android:orderInCategory="200"
         android:showAsAction="always|ifRoom"
         android:title="@string/mnuBluetooth" />
+    <item android:id="@+id/mnuFullscreen"
+        android:icon="@drawable/ic_fullscreen"
+        android:orderInCategory="300"
+        android:showAsAction="always|ifRoom"
+        android:title="@string/mnuFullscreen" />
     <item
         android:id="@+id/mnuSetting"
         android:icon="@drawable/ic_setting"
