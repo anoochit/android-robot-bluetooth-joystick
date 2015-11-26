@@ -14,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:visibility="invisible" />
     </FrameLayout>
 
     <FrameLayout

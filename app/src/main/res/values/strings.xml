@@ -130,6 +130,13 @@
     <string name="pref_title_video">Stream URL</string>
     <string name="pref_description_video">Show video via streaming</string>
     <string name="pref_descriptiontitle_video">Setup video streaming</string>
+    <string name="pref_title_left_switch">Left Joystick</string>
+    <string name="pref_title_right_switch">Right Joystick</string>
+    <string name="pref_title_left_pos_none">None</string>
+    <string name="pref_default_left_pos_none">0|0</string>
+    <string name="pref_title_hold_left_pos_none">None</string>
+    <string name="pref_default_right_pos_none">0|0</string>
+    <string name="pref_title_right_pos_none">None</string>
 
 
 </resources>

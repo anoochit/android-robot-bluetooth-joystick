@@ -204,6 +204,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("pref_hold_left_pos_upright"));
             bindPreferenceSummaryToValue(findPreference("pref_hold_left_pos_downleft"));
             bindPreferenceSummaryToValue(findPreference("pref_hold_left_pos_downright"));
+            bindPreferenceSummaryToValue(findPreference("pref_left_pos_none"));
         }
 
         @Override
@@ -249,6 +250,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("pref_hold_right_pos_upright"));
             bindPreferenceSummaryToValue(findPreference("pref_hold_right_pos_downleft"));
             bindPreferenceSummaryToValue(findPreference("pref_hold_right_pos_downright"));
+            bindPreferenceSummaryToValue(findPreference("pref_right_pos_none"));
         }
 
         @Override

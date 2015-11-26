@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -68,11 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        getWindow().getDecorView().setBackgroundColor(Color.DKGRAY);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.windowBackground));
 
         joystickLeft = (Joystick) findViewById(R.id.joystickLeft);
         joystickRight = (Joystick) findViewById(R.id.joystickRight);
-
 
 
         // setup bluetooth
@@ -114,6 +114,46 @@ public class MainActivity extends AppCompatActivity {
         hideSystemUI();
     }
 
+
+    private String joystickData(String key, float offset) {
+        final boolean pwm = prefs.getBoolean("pref_send_pwm_switch", false);
+        String data = "";
+        if ((pwm == false) && (distanceConvert(offset) >= 100)) {
+            // start
+            if (prefs.getBoolean("pref_token_switch", true) == true) {
+                data = data + prefs.getString("pref_before_token", "");
+            }
+            // data
+            data = data + prefs.getString(key, "");
+            // pwm
+            if (prefs.getBoolean("pref_send_pwm_switch", true) == true) {
+                data = data + prefs.getString("pref_pwm_separator", "");
+                data = data + distanceConvert(offset);
+            }
+            // stop
+            if (prefs.getBoolean("pref_token_switch", true) == true) {
+                data = data + prefs.getString("pref_end_token", "");
+            }
+        } else if (pwm == true) {
+            // start
+            if (prefs.getBoolean("pref_token_switch", true) == true) {
+                data = data + prefs.getString("pref_before_token", "");
+            }
+            // data
+            data = data + prefs.getString(key, "");
+            // pwm
+            if (prefs.getBoolean("pref_send_pwm_switch", true) == true) {
+                data = data + prefs.getString("pref_pwm_separator", "");
+                data = data + distanceConvert(offset);
+            }
+            // stop
+            if (prefs.getBoolean("pref_token_switch", true) == true) {
+                data = data + prefs.getString("pref_end_token", "");
+            }
+        }
+        return data;
+    }
+
     private void setup() {
         // set view
         txtAngle = (TextView) findViewById(R.id.txtAngle);
@@ -121,9 +161,7 @@ public class MainActivity extends AppCompatActivity {
         txtHold = (TextView) findViewById(R.id.txtHold);
         txtValue = (TextView) findViewById(R.id.txtValue);
 
-
         // setup motion constrain for joystick right
-
         joystickLeft.setJoystickListener(new JoystickListener() {
             @Override
             public void onDown() {
@@ -140,12 +178,12 @@ public class MainActivity extends AppCompatActivity {
                 int direction = get8Direction(degrees);
 
                 // Right hold
-                if (buttonDownRight) {
+                if ((buttonDownRight) && (prefs.getBoolean("pref_hold_right",false)==true)) {
                     // set text
                     txtHold.setText("Right Hold");
                     // action left joystick
                     if (direction == STICK_UP) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -160,10 +198,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_left_pos_up", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_UPRIGHT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -178,10 +217,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_left_pos_upright", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_RIGHT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -196,10 +236,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_left_pos_right", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_DOWNRIGHT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -214,10 +255,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_left_pos_downright", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_DOWN) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -232,10 +274,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_left_pos_down", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_DOWNLEFT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -250,10 +293,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_left_pos_downleft", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_LEFT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -268,10 +312,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_left_pos_left", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_UPLEFT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -286,7 +331,8 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_left_pos_upleft", offset);
                         sendBluetoothData(data);
                     } else {
                         // no direction
@@ -294,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     // action left joystick
                     if (direction == STICK_UP) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -309,10 +355,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_left_pos_up", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_UPRIGHT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -327,10 +374,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_left_pos_upright", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_RIGHT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -345,10 +393,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_left_pos_right", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_DOWNRIGHT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -363,10 +412,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_left_pos_downright", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_DOWN) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -381,10 +431,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_left_pos_down", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_DOWNLEFT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -399,10 +450,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_left_pos_downleft", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_LEFT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -417,10 +469,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_left_pos_left", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_UPLEFT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -435,7 +488,8 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_left_pos_upleft", offset);
                         sendBluetoothData(data);
                     } else {
                         // no direction
@@ -450,6 +504,8 @@ public class MainActivity extends AppCompatActivity {
                 txtOffset.setText("");
                 txtHold.setText("");
                 buttonDownLeft = false;
+                //String data = joystickData("pref_left_pos_none", 0);
+                //sendBluetoothData(data);
             }
         });
 
@@ -469,12 +525,12 @@ public class MainActivity extends AppCompatActivity {
                 int direction = get8Direction(degrees);
 
                 // Left hold
-                if (buttonDownLeft) {
+                if ((buttonDownLeft) && (prefs.getBoolean("pref_hold_left",false)==true)) {
                     // set text
                     txtHold.setText("Left Hold");
                     // action
                     if (direction == STICK_UP) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -489,10 +545,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_right_pos_up", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_UPRIGHT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -507,10 +564,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_right_pos_upright", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_RIGHT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -525,10 +583,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_right_pos_right", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_DOWNRIGHT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -543,10 +602,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_right_pos_downright", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_DOWN) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -561,10 +621,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_right_pos_down", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_DOWNLEFT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -579,10 +640,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_right_pos_downleft", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_LEFT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -597,10 +659,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_right_pos_left", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_UPLEFT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -615,7 +678,8 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_hold_right_pos_upleft", offset);
                         sendBluetoothData(data);
                     } else {
                         // no direction
@@ -624,7 +688,7 @@ public class MainActivity extends AppCompatActivity {
                     // Not hold
                     // set action
                     if (direction == STICK_UP) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -639,10 +703,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_right_pos_up", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_UPRIGHT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -657,10 +722,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_right_pos_upright", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_RIGHT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -675,10 +741,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_right_pos_right", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_DOWNRIGHT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -693,10 +760,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_right_pos_downright", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_DOWN) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -711,10 +779,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_right_pos_down", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_DOWNLEFT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -729,10 +798,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_right_pos_downleft", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_LEFT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -747,10 +817,11 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_right_pos_left", offset);
                         sendBluetoothData(data);
                     } else if (direction == STICK_UPLEFT) {
-                        String data = "";
+                        /*String data = "";
                         // start
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_before_token", "");
@@ -765,7 +836,8 @@ public class MainActivity extends AppCompatActivity {
                         // stop
                         if (prefs.getBoolean("pref_token_switch", true) == true) {
                             data = data + prefs.getString("pref_end_token", "");
-                        }
+                        }*/
+                        String data = joystickData("pref_right_pos_upleft", offset);
                         sendBluetoothData(data);
                     } else {
                         // no direction
@@ -780,7 +852,8 @@ public class MainActivity extends AppCompatActivity {
                 txtOffset.setText("");
                 txtHold.setText("");
                 buttonDownRight = false;
-                buttonDownLeft = false;
+                //String data = joystickData("pref_right_pos_none", 0);
+                //sendBluetoothData(data);
             }
         });
     }
@@ -800,7 +873,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupJoystickMode() {
         // setup motion constrain for joystick left
-        if (prefs.getBoolean("pref_constrain_left_switch", false)==false) {
+        if (prefs.getBoolean("pref_constrain_left_switch", false) == false) {
             Log.d("LOG-JOY", "constrain normal");
             joystickLeft.setMotionConstraint(Joystick.MotionConstraint.NONE);
         } else if (((prefs.getBoolean("pref_constrain_left_hor", true)) == true) && ((prefs.getBoolean("pref_constrain_left_ver", true)) == false)) {
@@ -815,7 +888,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // setup motion constrain for joystick right
-        if (prefs.getBoolean("pref_constrain_right_switch", false)==false) {
+        if (prefs.getBoolean("pref_constrain_right_switch", false) == false) {
             Log.d("LOG-JOY", "constrain normal");
             joystickRight.setMotionConstraint(Joystick.MotionConstraint.NONE);
         } else if (((prefs.getBoolean("pref_constrain_right_hor", true)) == true) &&
@@ -831,18 +904,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setupVideoMode(){
+    private void setupVideoMode() {
         // setup motion constrain for joystick left
-        if (prefs.getBoolean("pref_send_video_switch", false)==true) {
+        if (prefs.getBoolean("pref_send_video_switch", false) == true) {
             // start video
             try {
                 videoView = (VideoView) findViewById(R.id.videoView);
+                videoView.setVisibility(View.VISIBLE);
                 Uri videoUri = Uri.parse(prefs.getString("pref_video", ""));
                 videoView.setVideoURI(videoUri);
                 videoView.start();
-            }catch (Exception e) {
-                Log.d("LOG",e.getMessage());
+            } catch (Exception e) {
+                Log.d("LOG", e.getMessage());
             }
+        } else {
+            videoView = (VideoView) findViewById(R.id.videoView);
+            videoView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -877,7 +954,6 @@ public class MainActivity extends AppCompatActivity {
         // setup video camera
         setupVideoMode();
     }
-
 
 
     @Override
@@ -925,9 +1001,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendBluetoothData(final String data) {
         // FIXME: 11/23/15 flood output T_T
-        Log.d("LOG", data);
-        txtValue.setText(data);
-        bt.send(data, true);
+        final int delay = Integer.parseInt(prefs.getString("pref_delay_list", "1000"));
+
+        final Handler handler = new Handler();
+
+        final Runnable r = new Runnable() {
+            public void run() {
+                Log.d("LOG", data);
+                txtValue.setText(data);
+                bt.send(data, true);
+            }
+        };
+        handler.postDelayed(r, delay);
     }
 
     public int get8Direction(float degrees) {
